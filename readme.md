@@ -19,7 +19,7 @@ T Biometric Storage is available on `mavenCentral()`.
 
 - You can use crypt and decrypt functions with your own key without biometric authentication for secure data if you don't need to ask for fingerprint.
 ```kotlin
-implementation("io.github.the-best-is-best:TBiometricStorage:1.0.1")
+implementation("io.github.the-best-is-best:TBiometricStorage:1.0.0")
 ```
 
 ## Setup Compose
