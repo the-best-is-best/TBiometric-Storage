@@ -24,7 +24,7 @@ afterEvaluate {
         publications.create<MavenPublication>("release") {
             groupId = "io.github.the-best-is-best"
             artifactId = "TBiometricStorage"
-            version = "1.0.0"
+            version = "1.0.1"
             from(components["release"])
 
 
