@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
 import com.example.tbiometricstorage.ui.theme.TBiometricStorageTheme
 import io.tbib.tbiometricstorage.TBiometricStorage
+import io.tbib.tbiometricstorage.fileExists
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,9 +55,42 @@ class MainActivity : FragmentActivity() {
 //                            }
 //                        }
 //                    }
+                    if (!TBiometricStorage().fileExists(context, "login")) {
+                      Log.d("get v", "no data")
 
+                    }else {
 
+                        TBiometricStorage.bioAuthenticate(activity, context, onSuccess = {
+                            val data: String? = TBiometricStorage.retrieveData(context, "key")
+                            if (data != null) {
+                                Log.d("get v", "data $data")
+                            } else {
+                                TBiometricStorage.storeData(context, "key", "value")
+                            }
+                        }, onFailed = {
+                            Log.d("get v", "auth failed")
+                            message = "auth failed"
+                        }, onError = { code, errString ->
+                            when (code) {
+                                -1 -> {
+                                    Log.d("get v", "not support")
+                                    message = "not support"
+                                }
 
+                                -2 -> {
+                                    Log.d("get v", "Temporarily unavailable")
+                                    message = "Temporarily unavailable"
+                                }
+
+                                -3 -> {
+                                    Log.d("get v", "not active Fingerprint or Face ID")
+                                    message = "not active Fingerprint or Face ID"
+                                }
+                            }
+                            Log.d("get v", "auth error $code $errString")
+//   message = "auth error $errString"
+                        })
+                    }
 
                     TBiometricStorageTheme {
                 // A surface container using the 'background' color from the theme

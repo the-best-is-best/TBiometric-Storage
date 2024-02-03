@@ -31,12 +31,12 @@ internal class OldApiCryptoManager(private val context: Context) {
     }
 
     fun retrieveAndDecrypt(fileName: String, fileSecretEncrypt: String): String? {
-        if (!CheckFileExist().fileExists(context, fileName)) {
+        if (!TBiometricStorage().fileExists(context, fileName)) {
             return null
         }
         val fis = context.openFileInput(fileName)
         val iv = ByteArray(ivSize)
-        if (!CheckFileExist().fileExists(context, fileSecretEncrypt)) {
+        if (!TBiometricStorage().fileExists(context, fileSecretEncrypt)) {
             return null
         }
         val file = File(context.filesDir, fileName)

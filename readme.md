@@ -19,7 +19,7 @@ T Biometric Storage is available on `mavenCentral()`.
 
 - You can use crypt and decrypt functions with your own key without biometric authentication for secure data if you don't need to ask for fingerprint.
 ```kotlin
-implementation("io.github.the-best-is-best:TBiometricStorage:1.0.1")
+implementation("io.github.the-best-is-best:TBiometricStorage:1.0.2")
 ```
 
 ## Setup Compose
@@ -45,37 +45,49 @@ class MainActivity : FragmentActivity() {
 
 ### How to use
 
+## Note
+### in v 1.0.2 Add TBiometricStorage().fileExists
+
 ```kotlin
    val context = LocalContext.current
    val activity = LocalContext.current as FragmentActivity
-TBiometricStorage.bioAuthenticate(activity, context, onSuccess = {
-    val data:String? = TBiometricStorage.retrieveData(context, "key")
-    if(data != null){
-        Log.d("get v", "data $data")
-    }else {
-        TBiometricStorage.storeData(context, "key", "value")
-    }
-}, onFailed = {
-    Log.d("get v", "auth failed")
-    message = "auth failed"
-}, onError = { code, errString ->
-    when(code){
-        -1 -> {
-            Log.d("get v", "not support")
-            message = "not support"
+
+
+if (!TBiometricStorage().fileExists(context, "login")) {
+    Log.d("get v", "no data")
+
+}else {
+
+
+    TBiometricStorage.bioAuthenticate(activity, context, onSuccess = {
+        val data: String? = TBiometricStorage.retrieveData(context, "key")
+        if (data != null) {
+            Log.d("get v", "data $data")
+        } else {
+            TBiometricStorage.storeData(context, "key", "value")
         }
-        -2 -> {
-            Log.d("get v", "Temporarily unavailable")
-            message = "Temporarily unavailable"
+    }, onFailed = {
+        Log.d("get v", "auth failed")
+        message = "auth failed"
+    }, onError = { code, errString ->
+        when (code) {
+            -1 -> {
+                Log.d("get v", "not support")
+                message = "not support"
+            }
+            -2 -> {
+                Log.d("get v", "Temporarily unavailable")
+                message = "Temporarily unavailable"
+            }
+            -3 -> {
+                Log.d("get v", "not active Fingerprint or Face ID")
+                message = "not active Fingerprint or Face ID"
+            }
         }
-        -3 -> {
-            Log.d(not active biometric)
-            message = "not active Fingerprint or Face ID"
-        }
-    }
-     Log.d("get v", "auth error $code $errString")
+        Log.d("get v", "auth error $code $errString")
 //   message = "auth error $errString"
-})
+    })
+}
 ```
 
 ### Now in v 1.0.1

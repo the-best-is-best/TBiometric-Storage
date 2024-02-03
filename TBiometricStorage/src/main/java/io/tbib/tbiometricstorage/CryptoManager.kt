@@ -27,7 +27,7 @@ internal class CryptoManager(private val context: Context) {
 
     fun retrieveAndDecrypt(fileName: String): String? {
         val keyPair = getKeyPair()
-        val fileExist = CheckFileExist().fileExists(context, fileName)
+        val fileExist = TBiometricStorage().fileExists(context, fileName)
         if (!fileExist) {
             return null
         }
